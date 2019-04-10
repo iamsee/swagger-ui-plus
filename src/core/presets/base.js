@@ -30,6 +30,9 @@ import Clear from "core/components/clear"
 import LiveResponse from "core/components/live-response"
 import OnlineValidatorBadge from "core/components/online-validator-badge"
 import Operations from "core/components/operations"
+import standalone_Operations from "../../standalone/operations"
+import standalone_FilterDom from "../../standalone/filterDom"
+import standalone_operationTag from "../../standalone/operation-tag"
 import OperationTag from "core/components/operation-tag"
 import Operation from "core/components/operation"
 import OperationSummary from "core/components/operation-summary"
@@ -81,6 +84,7 @@ import SvgAssets from "core/components/svg-assets"
 import Markdown from "core/components/providers/markdown"
 
 import BaseLayout from "core/components/layouts/base"
+import BytelurkApiLayout from "core/components/layouts/BytelurkApiLayout"
 
 import * as LayoutUtils from "core/components/layout-utils"
 import * as JsonSchemaComponents from "core/json-schema-components"
@@ -107,6 +111,9 @@ export default function() {
       JumpToPath,
       onlineValidatorBadge: OnlineValidatorBadge,
       operations: Operations,
+      standalone_Operations: standalone_Operations,
+      standalone_FilterDom: standalone_FilterDom,
+      standalone_operationTag: standalone_operationTag,
       operation: Operation,
       OperationSummary,
       OperationSummaryMethod,
@@ -141,6 +148,7 @@ export default function() {
       TryItOutButton,
       Markdown,
       BaseLayout,
+      BytelurkApiLayout,
       VersionPragmaFilter,
       VersionStamp,
       OperationExt,
