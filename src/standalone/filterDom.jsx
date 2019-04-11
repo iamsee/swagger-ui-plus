@@ -30,7 +30,10 @@ export default class Operations extends React.Component {
     authActions: PropTypes.object.isRequired,
     authSelectors: PropTypes.object.isRequired,
     getConfigs: PropTypes.func.isRequired,
-    fn: PropTypes.func.isRequired
+    fn: PropTypes.func.isRequired,
+    handleFilterMethod:PropTypes.func,
+    handleFilterTag:PropTypes.func,
+    filterTag:PropTypes.string
   };
 
   constructor(props, context) {
@@ -41,7 +44,10 @@ export default class Operations extends React.Component {
       selectedMethod:undefined,
       developerList:[],
       verList:[],
-      methodList:[]
+      methodList:[],
+      filterVersion:"",
+      filterDev:"",
+      filterSearch:""
     }
 
   }
@@ -53,7 +59,6 @@ export default class Operations extends React.Component {
   buildList(taggedOps){
 
     taggedOps = isImmutable(taggedOps)?taggedOps.toJS():taggedOps
-    console.log("taggedOps=>",taggedOps)
     var verList = []
     var developerList = []
     var methodList = []
@@ -96,20 +101,45 @@ export default class Operations extends React.Component {
 
 
   }
+  handleChange(event){
+    this.setState({
+      filterSearch:event.target.value
+    })
+  }
   handleSelectVer(selectedOption){
     this.setState({
       selectedVer:selectedOption
     })
+    if(selectedOption.value === "全部版本"){
+      this.setState({
+        filterVersion:""
+      })
+    }else{
+      this.setState({
+        filterVersion:selectedOption.value
+      })
+    }
   }
   handleSelectDev(selectedOption){
     this.setState({
       selectedDev:selectedOption
     })
+    if(selectedOption.value === "全部开发人"){
+      this.setState({
+        filterDev:""
+      })
+    }else{
+      this.setState({
+        filterDev:selectedOption.value
+      })
+    }
   }
-  handleSelectMethod(selectedOption){
+  handleSelectMethod(selectedOption) {
     this.setState({
-      selectedMethod:selectedOption
+      selectedMethod: selectedOption
     })
+    selectedOption = selectedOption.value === "全部方法" ? "" : selectedOption.value
+    this.props.handleFilterMethod(selectedOption)
   }
 
   render () {
@@ -124,12 +154,8 @@ export default class Operations extends React.Component {
     } = this.props
 
     let taggedOps = specSelectors.taggedOperations()
-    console.log("taggedOps=>",taggedOps.toJS())
 
     const rawSchemaValue = specSelectors.specJson()
-    console.log("rawSchemaValue=>",rawSchemaValue)
-
-
 
 
     const OperationContainer = getComponent("OperationContainer", true)
@@ -150,15 +176,12 @@ export default class Operations extends React.Component {
     if (maxDisplayedTags && !isNaN(maxDisplayedTags) && maxDisplayedTags >= 0) {
       taggedOps = taggedOps.slice(0, maxDisplayedTags)
     }
-    const options = [
-      { value: 'chocolate', label: 'Chocolate' },
-      { value: 'strawberry', label: 'Strawberry' },
-      { value: 'vanilla', label: 'Vanilla' }
-    ];
+    const tags = Object.keys(taggedOps.toJS()) || []
+
     return (
       <div style={styles.commonFlex}>
         <div style={styles.commonFlex}>
-          <input type={"search"} style={{ width: "100%", height: "35px" }}></input>
+          <input type={"search"} style={{ width: "100%", height: "35px" }} value={this.state.filterSearch} onChange={this.handleChange.bind(this)}></input>
         </div>
         <div style={{display:"flex",flexDirection:"row",marginTop:"5px",flex:"1",width:"100%"}}>
           <div style={{flex:"1"}}>
@@ -202,15 +225,20 @@ export default class Operations extends React.Component {
           </div>
 
         </div>
-        <div style={{ flex: 5 ,marginTop:"10px"}}>
+        <div style={{ flex: 5 ,marginTop:"10px",paddingLeft:"5px",width:"100%"}}>
           {
             taggedOps.map( (tagObj, tag) => {
-              const operations = tagObj.get("operations")
               return (
                 <OperationTag
                   key={"operation-" + tag}
                   tagObj={tagObj}
                   tag={tag}
+                  tags={tags}
+                  filterTag={this.props.filterTag}
+                  filterVersion={this.state.filterVersion}
+                  filterDev={this.state.filterDev}
+                  filterSearch={this.state.filterSearch}
+                  handleFilterTag={this.props.handleFilterTag}
                   layoutSelectors={layoutSelectors}
                   layoutActions={layoutActions}
                   getConfigs={getConfigs}

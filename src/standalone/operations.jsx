@@ -21,7 +21,9 @@ export default class Operations extends React.Component {
     authActions: PropTypes.object.isRequired,
     authSelectors: PropTypes.object.isRequired,
     getConfigs: PropTypes.func.isRequired,
-    fn: PropTypes.func.isRequired
+    fn: PropTypes.func.isRequired,
+    filterMethod: PropTypes.string.isRequired,
+    filterTag: PropTypes.string
   };
 
   render() {
@@ -56,12 +58,16 @@ export default class Operations extends React.Component {
       taggedOps = taggedOps.slice(0, maxDisplayedTags)
     }
 
+
     return (
         <div>
           {filterValue}
 
           {
             taggedOps.map( (tagObj, tag) => {
+              if(tag !== this.props.filterTag){
+                return null
+              }
               const operations = tagObj.get("operations")
               return (
                 <OperationTag
@@ -90,6 +96,10 @@ export default class Operations extends React.Component {
                       if(validMethods.indexOf(method) === -1) {
                         return null
                       }
+                      if(this.props.filterMethod && this.props.filterMethod !== method){
+                        return null
+                      }
+
 
                       return <OperationContainer
                                  key={`${path}-${method}`}

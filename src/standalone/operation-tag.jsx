@@ -22,12 +22,18 @@ export default class OperationTag extends React.Component {
     getComponent: PropTypes.func.isRequired,
 
     children: PropTypes.element,
+    handleFilterTag: PropTypes.func,
+    filterTag: PropTypes.string,
+    filterVersion: PropTypes.string,
+    filterDev: PropTypes.string,
+    filterSearch: PropTypes.string,
   }
 
   render() {
     const {
       tagObj,
       tag,
+      tags,
       children,
 
       layoutSelectors,
@@ -77,16 +83,36 @@ export default class OperationTag extends React.Component {
       },
 
     }
+    if(this.props.filterVersion !== "" && this.props.filterVersion !== tagDescription){
+      return null
+    }
+    if(this.props.filterDev !== "" && this.props.filterDev !== tagExternalDocsDescription){
+      return null
+    }
+    if(this.props.filterSearch !== "" && tag.toLowerCase().indexOf(this.props.filterSearch.toLowerCase()) === -1){
+      return null
+    }
     return (
-      <div className={showTag ? "opblock-tag-section is-open" : "opblock-tag-section"} style={{height:"45px",overflow:"hidden",padding:0}}>
+
+      <div className={showTag ? "opblock-tag-section is-open" : "opblock-tag-section"} style={{height:"45px",overflow:"hidden",padding:0,backgroundColor:this.props.filterTag === tag ?"RGBA(26, 26, 26, 0.3)":""}}>
 
         <div
-          onClick={() => layoutActions.show(isShownKey, !showTag)}
+          onClick={() => {
+            for(let tag of tags){
+              layoutActions.show(["operations-tag",tag], false)
+            }
+            layoutActions.show(isShownKey, true)
+            if(isShownKey.length === 2){
+              this.props.handleFilterTag(isShownKey[1])
+            }else{
+              this.props.handleFilterTag("")
+            }
+          }}
           className={!tagDescription ? "opblock-tag no-desc" : "opblock-tag"}
           id={isShownKey.map(v => escapeDeepLinkPath(v)).join("-")}
           data-tag={tag}
           data-is-open={showTag}
-          style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" ,padding:0,paddingLeft:"5px"}}
+          style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" ,padding:0,margin:0,paddingLeft:"5px",borderBottomWidth:"1px",borderBottomColor:"RGBA(26, 26, 26, 0.1)"}}
         >
           <div style={styles.listItemStyle1}>
             {tag}
@@ -98,16 +124,16 @@ export default class OperationTag extends React.Component {
             {tagExternalDocsDescription}
           </div>
 
-          <button
-            className="expand-operation"
-            title={showTag ? "Collapse operation" : "Expand operation"}
-            onClick={() => layoutActions.show(isShownKey, !showTag)}>
+          {/*<button*/}
+          {/*  className="expand-operation"*/}
+          {/*  title={showTag ? "Collapse operation" : "Expand operation"}*/}
+          {/*  onClick={() => layoutActions.show(isShownKey, !showTag)}>*/}
 
-            <svg className="arrow" width="20" height="20">
-              <use href={showTag ? "#large-arrow-down" : "#large-arrow"}
-                   xlinkHref={showTag ? "#large-arrow-down" : "#large-arrow"}/>
-            </svg>
-          </button>
+          {/*  <svg className="arrow" width="20" height="20">*/}
+          {/*    <use href={showTag ? "#large-arrow-down" : "#large-arrow"}*/}
+          {/*         xlinkHref={showTag ? "#large-arrow-down" : "#large-arrow"}/>*/}
+          {/*  </svg>*/}
+          {/*</button>*/}
         </div>
 
         <Collapse isOpened={showTag}>

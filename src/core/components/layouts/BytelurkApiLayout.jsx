@@ -13,12 +13,23 @@ export default class BytelurkApiLayout extends React.Component {
     getComponent: PropTypes.func.isRequired
   }
   state = {
-    filterValue : ""
+    filterValue : "",
+    filterMethod:"",
+    filterTag:"",
   }
   onChange = (e)=>{
-    console.log('onChange=>',e.target.value)
     this.setState({
       filterValue:e.target.value
+    })
+  }
+  handleFilterMethod = (val) => {
+    this.setState({
+      filterMethod:val
+    })
+  }
+  handleFilterTag = (val) => {
+    this.setState({
+      filterTag:val
     })
   }
   render() {
@@ -121,10 +132,10 @@ export default class BytelurkApiLayout extends React.Component {
             <Row>
               <div style={{display:"flex",alignItems:"flex-start",justifyContent:"center"}}>
                 <div style={{ minWidth: "380px",marginRight:"20px",marginTop:"20px",flex:1}}>
-                  <Standalone_FilterDom />
+                  <Standalone_FilterDom filterTag={this.state.filterTag} handleFilterMethod={this.handleFilterMethod} handleFilterTag={this.handleFilterTag}/>
                 </div>
                 <div style={{display:"inline-block",flex:3}} >
-                  <Operations filterValue={this.state.filterValue}/>
+                  <Operations filterTag={this.state.filterTag} filterValue={this.state.filterValue} filterMethod={this.state.filterMethod}/>
                 </div>
               </div>
 
