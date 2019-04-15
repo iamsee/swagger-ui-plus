@@ -183,7 +183,7 @@ export default class Operations extends React.Component {
     return (
       <div style={styles.commonFlex}>
         <div style={styles.commonFlex}>
-          <input type={"search"} style={{ width: "100%", height: "35px" }} value={this.state.filterSearch} onChange={this.handleChange.bind(this)}></input>
+          <input placeholder={"检索分类"} type={"search"} style={{ width: "100%", height: "35px" }} value={this.state.filterSearch} onChange={this.handleChange.bind(this)}></input>
         </div>
         <div style={{display:"flex",flexDirection:"row",marginTop:"5px",flex:"1",width:"100%"}}>
           <div style={{flex:"1"}}>
