@@ -67,7 +67,7 @@ export default class OperationTag extends React.Component {
         overflow:"hidden"
       },
       listItemStyle1:{
-        fontSize: "28px",
+        fontSize: "18px",
         fontWeight: "600",
         flex: 1,
         display: "flex",
@@ -112,7 +112,7 @@ export default class OperationTag extends React.Component {
           id={isShownKey.map(v => escapeDeepLinkPath(v)).join("-")}
           data-tag={tag}
           data-is-open={showTag}
-          style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" ,padding:0,margin:0,paddingLeft:"5px",borderBottomWidth:"1px",borderBottomColor:"RGBA(26, 26, 26, 0.1)"}}
+          style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center" ,padding:0,margin:0,paddingLeft:"5px",height:"45px",borderBottomWidth:"1px",borderBottomColor:"RGBA(26, 26, 26, 0.1)"}}
         >
           <div style={styles.listItemStyle1}>
             {tag}

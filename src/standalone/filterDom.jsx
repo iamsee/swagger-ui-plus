@@ -63,8 +63,10 @@ export default class Operations extends React.Component {
     var developerList = []
     var methodList = []
     _.each(taggedOps,(item,index) => {
-      verList.push(item.tagDetails.description)
-      if(item.tagDetails.externalDocs && item.tagDetails.externalDocs.description){
+      if(item.tagDetails && item.tagDetails.description){
+        verList.push(item.tagDetails.description)
+      }
+      if(item.tagDetails && item.tagDetails.externalDocs && item.tagDetails.externalDocs.description){
         developerList.push(item.tagDetails.externalDocs.description)
       }
       if(item.operations && item.operations.length > 0){
